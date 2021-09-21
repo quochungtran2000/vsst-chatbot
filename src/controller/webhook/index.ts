@@ -1,9 +1,11 @@
 import getWebhook from "./getWebhook";
-import postWenhook from './postWebhook'
+import messageProfile from "./messageProfile";
+import postWenhook from "./postWebhook";
 
 const webhookConntroller = {
   getWebhook: getWebhook,
-  postWebhook: postWenhook
-}
+  postWebhook: postWenhook,
+  messageProfile: messageProfile,
+};
 
-export default webhookConntroller
+export default webhookConntroller;
