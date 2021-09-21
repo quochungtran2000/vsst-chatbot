@@ -13,5 +13,5 @@ export const initialRouter = (app: Application) => {
   router.get('/webhook', webhookConntroller.getWebhook);
   router.post('/webhook', webhookConntroller.postWebhook);
 
-  return app.use('/', router)
+  return app.use('/api/v1', router)
 }
