@@ -1,6 +1,6 @@
-import getWebhook from "./getWebhook";
-import messageProfile from "./messageProfile";
-import postWenhook from "./postWebhook";
+import getWebhook from "./query/getWebhook";
+import messageProfile from "./query/messageProfile";
+import postWenhook from "./query/postWebhook";
 
 const webhookConntroller = {
   getWebhook: getWebhook,

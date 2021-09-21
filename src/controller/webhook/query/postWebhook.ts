@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import { handleMessage, handlePostback } from "./utils/helpers";
+import { handleMessage, handlePostback } from "../webhook.utils";
 
 const postWebhook = (req: Request, res: Response, next: NextFunction) => {
   let body = req.body;
@@ -9,7 +9,7 @@ const postWebhook = (req: Request, res: Response, next: NextFunction) => {
     // Iterates over each entry - there may be multiple if batched
     body.entry.forEach(function (entry: any) {
       let webhook_event = entry.messaging[0];
-      console.log(webhook_event);
+      console.log(`webhook_event`, webhook_event);
 
       // Get the sender PSID
       let sender_psid = webhook_event.sender.id;

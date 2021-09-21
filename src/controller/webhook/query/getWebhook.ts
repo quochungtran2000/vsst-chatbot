@@ -1,8 +1,7 @@
 import { NextFunction, Request, Response } from "express";
-import { VERIFY_TOKEN } from "../../utils/constant";
+import { VERIFY_TOKEN } from "../../../utils/constant";
 
 const getWebhook = (req: Request, res: Response, next: NextFunction) => {
-  
   // Parse the query params
   let mode = req.query["hub.mode"];
   let token = req.query["hub.verify_token"];
