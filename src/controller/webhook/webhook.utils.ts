@@ -1,3 +1,4 @@
+import { AxiosPromise, AxiosResponse } from "axios";
 import request from "request";
 import messageApi from "../../axios/messageApi";
 import { PAGE_ACCESS_TOKEN } from "../../utils/constant";
@@ -7,7 +8,11 @@ import {
   RequestMethod,
   SendRequestType,
 } from "./webhook.enum";
-import { IMessage, ISendRequestParams } from "./webhook.interface";
+import {
+  IMessage,
+  ISendRequestParams,
+  IUserProfile,
+} from "./webhook.interface";
 import { mappingRequestParams } from "./webhook.mapper";
 
 // Handles messages events
@@ -86,7 +91,11 @@ export async function handlePostback(
         break;
       }
       case PostBackPayload.GET_STARTED: {
-        response = { text: "Chào mừng bạn đã đến với Vì Sale Sạch Túi" };
+        const user: IUserProfile = await messageApi.getAccountInfo(sender_psid);
+
+        response = {
+          text: `Chào mừng ${user.name} đã đến với Vì Sale Sạch Túi`,
+        };
       }
     }
 
@@ -96,9 +105,6 @@ export async function handlePostback(
       },
       message: response,
     };
-
-    const user = await messageApi.getAccountInfo(sender_psid);
-    console.log(user);
 
     sendRequest(SendRequestType.MESSAGE, data);
   } catch (error) {

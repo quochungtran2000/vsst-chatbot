@@ -17,6 +17,7 @@ axiosClient.interceptors.request.use(async (config) => {
   // Handle token here ...
   return config;
 });
+
 axiosClient.interceptors.response.use(
   (response) => {
     if (response && response.data) {
