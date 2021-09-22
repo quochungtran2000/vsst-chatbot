@@ -2,6 +2,7 @@ export enum PostBackPayload {
   YES = "YES",
   NO = "NO",
   GET_STARTED = "GET_STARTED",
+  HI = "HI"
 }
 
 export enum RequestMethod {

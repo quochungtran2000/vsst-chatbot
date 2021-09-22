@@ -49,6 +49,11 @@ export function handleMessage(sender_psid: number, received_message: any) {
                   title: "No!",
                   payload: PostBackPayload.NO,
                 },
+                {
+                  type: "postback",
+                  title: "HI",
+                  payload: PostBackPayload.HI,
+                },
               ],
             },
           ],
@@ -76,6 +81,7 @@ export async function handlePostback(
     console.log(`sender_psid`, sender_psid);
     console.log(`received_postback`, received_postback);
     let text;
+    let attachment;
     // Get the payload for the postback
     let payload = received_postback.payload;
 
@@ -98,6 +104,21 @@ export async function handlePostback(
           text = `Chào mừng ${user.name} đã đến với Vì Sale Sạch Túi`;
         }
         break;
+      }
+      case PostBackPayload.HI: {
+        text = `Chào bạn vô danh`;
+        if (sender_psid) {
+          const user: IUserProfile = await messageApi.getAccountInfo(
+            sender_psid
+          );
+          attachment = {
+            type: "image",
+            payload: {
+              url: user.profile_pic,
+              is_reusable: true,
+            },
+          };
+        }
       }
     }
 

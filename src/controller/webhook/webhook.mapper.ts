@@ -1,4 +1,4 @@
-import { MessageProfileUrl, MessageUrl } from "./webhook.constant";
+import { FB_API, PAGE_ACCESS_TOKEN } from "../../utils/constant";
 import { RequestMethod, SendRequestType } from "./webhook.enum";
 import { ISendRequestParams } from "./webhook.interface";
 
@@ -6,6 +6,8 @@ export const mappingRequestParams = (
   type: SendRequestType,
   data: any
 ): ISendRequestParams => {
+  const MessageProfileUrl = `${FB_API}/v12.0/me/messenger_profile?access_token=${PAGE_ACCESS_TOKEN}`;
+  const MessageUrl = `${FB_API}/v12.0/me/messages`;
   const result: ISendRequestParams = {
     method: RequestMethod.GET,
     data: data,
