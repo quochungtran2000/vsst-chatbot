@@ -1,10 +1,10 @@
 import { AxiosPromise } from "axios";
-import { FB_API } from "../utils/constant";
+import { FB_API, PAGE_ACCESS_TOKEN } from "../utils/constant";
 import axiosClient from "./axiosClient";
 
 const messageApi = {
   getAccountInfo: (sender_psid: number): AxiosPromise => {
-    const url = `${FB_API}/${sender_psid}?fields=first_name,last_name,name,profile_pic`;
+    const url = `${FB_API}/${sender_psid}?fields=first_name,last_name,name,profile_pic&access_token=${PAGE_ACCESS_TOKEN} `;
     return axiosClient.get(url);
   },
 };
