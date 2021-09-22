@@ -75,26 +75,29 @@ export async function handlePostback(
   try {
     console.log(`sender_psid`, sender_psid);
     console.log(`received_postback`, received_postback);
-    let response;
+    let text;
     // Get the payload for the postback
     let payload = received_postback.payload;
 
     // Set the response based on the postback payload
     switch (payload) {
       case PostBackPayload.YES: {
-        response = { text: "hihi yes" };
+        text = "hihi yes";
         break;
       }
       case PostBackPayload.NO: {
-        response = { text: "Noooooooo." };
+        text = "Noooooooo.";
         break;
       }
       case PostBackPayload.GET_STARTED: {
-        const user: IUserProfile = await messageApi.getAccountInfo(sender_psid);
-
-        response = {
-          text: `Chào mừng ${user.name} đã đến với Vì Sale Sạch Túi`,
-        };
+        text = `Chào mừng bạn đã đến với Vì Sale Sạch Túi`;
+        if (sender_psid) {
+          const user: IUserProfile = await messageApi.getAccountInfo(
+            sender_psid
+          );
+          text = `Chào mừng ${user.name} đã đến với Vì Sale Sạch Túi`;
+        }
+        break;
       }
     }
 
@@ -102,7 +105,7 @@ export async function handlePostback(
       recipient: {
         id: sender_psid,
       },
-      message: response,
+      message: { text: text },
     };
 
     sendRequest(SendRequestType.MESSAGE, data);
