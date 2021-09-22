@@ -1,8 +1,6 @@
-import { AxiosPromise, AxiosResponse } from "axios";
 import request from "request";
 import messageApi from "../../axios/messageApi";
 import { PAGE_ACCESS_TOKEN } from "../../utils/constant";
-import { MessageProfileUrl, MessageUrl } from "./webhook.constant";
 import {
   PostBackPayload,
   RequestMethod,
@@ -75,6 +73,7 @@ export async function handlePostback(
   received_postback: any
 ) {
   try {
+    console.log(`sender_psid`, sender_psid);
     console.log(`received_postback`, received_postback);
     let response;
     // Get the payload for the postback
