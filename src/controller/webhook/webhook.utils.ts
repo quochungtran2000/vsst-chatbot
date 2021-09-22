@@ -1,4 +1,5 @@
 import request from "request";
+import messageApi from "../../axios/messageApi";
 import { PAGE_ACCESS_TOKEN } from "../../utils/constant";
 import { MessageProfileUrl, MessageUrl } from "./webhook.constant";
 import {
@@ -6,7 +7,8 @@ import {
   RequestMethod,
   SendRequestType,
 } from "./webhook.enum";
-import { IMessage } from "./webhook.interface";
+import { IMessage, ISendRequestParams } from "./webhook.interface";
+import { mappingRequestParams } from "./webhook.mapper";
 
 // Handles messages events
 
@@ -63,55 +65,58 @@ export function handleMessage(sender_psid: number, received_message: any) {
 }
 
 // Handles messaging_postbacks events
-export function handlePostback(sender_psid: number, received_postback: any) {
-  console.log(`received_postback`, received_postback);
-  let response;
-  // Get the payload for the postback
-  let payload = received_postback.payload;
+export async function handlePostback(
+  sender_psid: number,
+  received_postback: any
+) {
+  try {
+    console.log(`received_postback`, received_postback);
+    let response;
+    // Get the payload for the postback
+    let payload = received_postback.payload;
 
-  // Set the response based on the postback payload
-  switch (payload) {
-    case PostBackPayload.YES: {
-      response = { text: "hihi yes" };
-      break;
+    // Set the response based on the postback payload
+    switch (payload) {
+      case PostBackPayload.YES: {
+        response = { text: "hihi yes" };
+        break;
+      }
+      case PostBackPayload.NO: {
+        response = { text: "Noooooooo." };
+        break;
+      }
+      case PostBackPayload.GET_STARTED: {
+        response = { text: "Chào mừng bạn đã đến với Vì Sale Sạch Túi" };
+      }
     }
-    case PostBackPayload.NO: {
-      response = { text: "Noooooooo." };
-      break;
-    }
-    case PostBackPayload.GET_STARTED: {
-      response = { text: "Bắt đầu là kết thúc" };
-    }
+
+    const data: IMessage = {
+      recipient: {
+        id: sender_psid,
+      },
+      message: response,
+    };
+
+    const user = await messageApi.getAccountInfo(sender_psid);
+    console.log(user);
+
+    sendRequest(SendRequestType.MESSAGE, data);
+  } catch (error) {
+    console.log(error);
   }
-  
-  const data: IMessage = {
-    recipient: {
-      id: sender_psid,
-    },
-    message: response,
-  };
-
-  sendRequest(SendRequestType.MESSAGE, data);
 }
 
 export const sendRequest = (type: SendRequestType, data: any) => {
-  let url = "";
+  const params: ISendRequestParams = mappingRequestParams(type, data);
+  return createRequest(params.url, params.method, params.data);
+};
 
-  switch (type) {
-    case SendRequestType.MESSAGE: {
-      url = MessageUrl;
-      break;
-    }
-    case SendRequestType.MESSAGE_PROFILE: {
-      url = MessageProfileUrl;
-    }
-  }
-
+const createRequest = (url: string, method: RequestMethod, data: any) => {
   return request(
     {
       uri: url,
       qs: { access_token: PAGE_ACCESS_TOKEN },
-      method: RequestMethod.POST,
+      method: method,
       json: data,
     },
     (err, res, body) => {
