@@ -4,7 +4,7 @@ import { IWebhookEvent } from "../webhook.interface";
 import { handleMessage, handlePostback } from "../webhook.utils";
 
 const postWebhook = (
-  req: Request<any, any, IWebhookEvent, any>,
+  req: Request,
   res: Response,
   next: NextFunction
 ) => {
@@ -14,8 +14,9 @@ const postWebhook = (
   // Checks this is an event from a page subscription
   if (object === WebhookObject.OBJECT) {
     // Iterates over each entry - there may be multiple if batched
-    entry.forEach(function (entry) {
+    entry.forEach(function (entry:any) {
       const webhook_event = entry.messaging[0];
+      console.log(`webhook_entry messing`,entry.messaging )
       console.log(`webhook_event`, webhook_event);
 
       // Get the sender PSID
