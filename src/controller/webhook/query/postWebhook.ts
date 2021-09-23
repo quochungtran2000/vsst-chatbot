@@ -11,6 +11,7 @@ const postWebhook = (
   const { object, entry } = req.body;
   console.log(req.body);
   console.log(`entry`, entry)
+  console.log(`entry messing`, entry.messaging)
 
   // Checks this is an event from a page subscription
   if (object === WebhookObject.OBJECT) {
