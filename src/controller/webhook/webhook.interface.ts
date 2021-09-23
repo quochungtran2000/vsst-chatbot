@@ -48,6 +48,7 @@ export interface ISendMessageRecipient {
 }
 
 export interface ISendMessageMessage {
+  mid: string;
   text?: string;
   attachment?: ISendMessageMessageAttachment;
 }
@@ -81,20 +82,20 @@ export interface IWebHookEntry {
 export interface IWebHookMessaging {
   sender: ISendMessageRecipient;
   rerecipient: ISendMessageRecipient;
-  postback:IWebHookPostBack
+  postback?: IWebHookPostBack;
+  message?: ISendMessageMessage;
 }
 
-
-export  interface IWebHookPostBack {
+export interface IWebHookPostBack {
   title: string;
   payload: PostBackPayload;
-  referral: IWebHookPostBackReferral
+  referral: IWebHookPostBackReferral;
 }
 
 export interface IWebHookPostBackReferral {
-  ref: string
-  source: WebhookReferral
-  type: string
-  referer_uri: string
-  is_guest_user: boolean
+  ref: string;
+  source: WebhookReferral;
+  type: string;
+  referer_uri: string;
+  is_guest_user: boolean;
 }
