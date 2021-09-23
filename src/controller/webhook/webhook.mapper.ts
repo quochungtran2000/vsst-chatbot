@@ -1,6 +1,6 @@
 import { FB_API, PAGE_ACCESS_TOKEN } from "../../utils/constant";
 import { RequestMethod, SendRequestType } from "./webhook.enum";
-import { ISendRequestParams } from "./webhook.interface";
+import { ISendMessageRecipient, ISendRequestParams } from "./webhook.interface";
 
 export const mappingRequestParams = (
   type: SendRequestType,
@@ -29,3 +29,14 @@ export const mappingRequestParams = (
 
   return result;
 };
+
+
+export const mappingRecipientParams = (data: ISendMessageRecipient) => {
+  const result:any = {};
+
+  if(data.id) result.id = data.id
+  if(data.user_ref) result.user_ref = data.user_ref
+  // if(data.post_id)
+
+  return result
+}
