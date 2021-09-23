@@ -81,58 +81,61 @@ export async function handlePostback(
   sender: ISendMessageRecipient,
   received_postback: any
 ) {
-  try {
-    console.log(`handlePostback sender`, sender);
-    console.log(`received_postback`, received_postback);
-    let text;
-    let attachment;
-    // Get the payload for the postback
-    let payload = received_postback.payload;
+  console.log(`handlePostback sender`, sender);
+  console.log(`received_postback`, received_postback);
+  let text;
+  let attachment;
+  // Get the payload for the postback
+  let payload = received_postback.payload;
 
-    // Set the response based on the postback payload
-    switch (payload) {
-      case PostBackPayload.YES: {
-        text = "hihi yes";
-        break;
-      }
-      case PostBackPayload.NO: {
-        text = "Noooooooo.";
-        break;
-      }
-      case PostBackPayload.GET_STARTED: {
-        text = `Chào mừng bạn đã đến với Vì Sale Sạch Túi`;
-        if (sender.id) {
-          const user: IUserProfile = await messageApi.getAccountInfo(sender.id);
+  // Set the response based on the postback payload
+  switch (payload) {
+    case PostBackPayload.YES: {
+      text = "hihi yes";
+      break;
+    }
+    case PostBackPayload.NO: {
+      text = "Noooooooo.";
+      break;
+    }
+    case PostBackPayload.GET_STARTED: {
+      text = `Chào mừng bạn đã đến với Vì Sale Sạch Túi`;
+      if (sender.id) {
+        try {
+          const user: IUserProfile = await sendRequest(
+            SendRequestType.USER_INFO,
+            { id: sender.id }
+          );
           text = `Chào mừng ${user.name} đã đến với Vì Sale Sạch Túi`;
+        } catch (error) {
+          console.log(error);
         }
-        break;
       }
-      case PostBackPayload.HI: {
-        text = `Chào bạn vô danh`;
-        if (sender.id) {
-          const user: IUserProfile = await messageApi.getAccountInfo(sender.id);
-          attachment = {
-            type: "image",
-            payload: {
-              url: user.profile_pic,
-              is_reusable: true,
-            },
-          };
-        }
+      break;
+    }
+    case PostBackPayload.HI: {
+      text = `Chào bạn vô danh`;
+      if (sender.id) {
+        const user: IUserProfile = await messageApi.getAccountInfo(sender.id);
+        attachment = {
+          type: "image",
+          payload: {
+            url: user.profile_pic,
+            is_reusable: true,
+          },
+        };
       }
     }
-
-    const recipient = mappingRecipientParams(sender);
-
-    const data: IMessage = {
-      recipient: recipient,
-      message: { text: text },
-    };
-
-    return sendRequest(SendRequestType.MESSAGE, data);
-  } catch (error) {
-    console.log(error);
   }
+
+  const recipient = mappingRecipientParams(sender);
+
+  const data: IMessage = {
+    recipient: recipient,
+    message: { text: text },
+  };
+
+  return sendRequest(SendRequestType.MESSAGE, data);
 }
 
 export const sendRequest = (type: SendRequestType, data: any): Promise<any> => {

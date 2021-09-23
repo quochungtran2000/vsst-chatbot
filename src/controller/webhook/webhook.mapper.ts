@@ -25,6 +25,10 @@ export const mappingRequestParams = (
       result.method = RequestMethod.POST;
       break;
     }
+    case SendRequestType.USER_INFO:{
+      result.url = `${FB_API}/${data.id}?fields=first_name,last_name,name,profile_pic&access_token=${PAGE_ACCESS_TOKEN} `
+      break;
+    }
   }
 
   return result;

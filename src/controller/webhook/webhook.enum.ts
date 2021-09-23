@@ -15,6 +15,7 @@ export enum RequestMethod {
 export enum SendRequestType {
   MESSAGE = "MESSAGE",
   MESSAGE_PROFILE = "MESSAGE_PROFILE",
+  USER_INFO = "USER_INFO"
 }
 
 export enum AttachmentType {
