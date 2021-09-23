@@ -9,6 +9,7 @@ const postWebhook = (
   next: NextFunction
 ) => {
   const { object, entry } = req.body;
+  console.log(req.body);
 
   // Checks this is an event from a page subscription
   if (object === WebhookObject.OBJECT) {

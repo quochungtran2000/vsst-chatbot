@@ -12,7 +12,7 @@ import {
   ISendRequestParams,
   IUserProfile,
 } from "./webhook.interface";
-import { mappingRequestParams } from "./webhook.mapper";
+import { mappingRecipientParams, mappingRequestParams } from "./webhook.mapper";
 
 // Handles messages events
 
@@ -66,8 +66,10 @@ export function handleMessage(
     };
   }
 
+  const recipient = mappingRecipientParams(sender);
+
   const data: IMessage = {
-    recipient: sender,
+    recipient: recipient,
     message: response,
   };
 
@@ -120,8 +122,10 @@ export async function handlePostback(
       }
     }
 
+    const recipient = mappingRecipientParams(sender);
+
     const data: IMessage = {
-      recipient: sender,
+      recipient: recipient,
       message: { text: text },
     };
 
