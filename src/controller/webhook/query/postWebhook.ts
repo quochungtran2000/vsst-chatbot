@@ -9,18 +9,12 @@ const postWebhook = (
   next: NextFunction
 ) => {
   const { object, entry } = req.body;
-  console.log(`entry`, entry)
-  for(let elm of entry){
-    console.log(`entry messing`, elm.messaging)
-  }
-  
 
   // Checks this is an event from a page subscription
   if (object === WebhookObject.PAGE) {
     // Iterates over each entry - there may be multiple if batched
     entry.forEach(function (entry:any) {
       const webhook_event = entry.messaging[0];
-      console.log(`webhook_entry messing`,entry.messaging )
       console.log(`webhook_event`, webhook_event);
 
       // Get the sender PSID

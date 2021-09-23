@@ -8,6 +8,7 @@ const getWebhook = (
   res: Response,
   next: NextFunction
 ) => {
+  console.log(req.query)
   // Parse the query params
   const { mode, verify_token, challenge } = req.query.hub;
   // Checks if a token and mode is in the query string of the request
