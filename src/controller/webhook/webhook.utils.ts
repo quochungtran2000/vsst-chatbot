@@ -101,10 +101,10 @@ export async function handlePostback(
       }
       case PostBackPayload.GET_STARTED: {
         text = `Chào mừng bạn đã đến với Vì Sale Sạch Túi`;
-        // if (sender.id) {
-        //   const user: IUserProfile = await messageApi.getAccountInfo(sender.id);
-        //   text = `Chào mừng ${user.name} đã đến với Vì Sale Sạch Túi`;
-        // }
+        if (sender.id) {
+          const user: IUserProfile = await messageApi.getAccountInfo(sender.id);
+          text = `Chào mừng ${user.name} đã đến với Vì Sale Sạch Túi`;
+        }
         break;
       }
       case PostBackPayload.HI: {
