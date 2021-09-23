@@ -1,4 +1,11 @@
-import { RequestMethod } from "./webhook.enum";
+import {
+  AttachmentType,
+  PostBackPayload,
+  RequestMethod,
+  WebhookHook,
+  WebhookObject,
+  WebhookReferral,
+} from "./webhook.enum";
 
 export interface IMessageProfile {
   get_started: IGetStarted;
@@ -10,25 +17,84 @@ export interface IGetStarted {
 }
 
 export interface IMessage {
-  recipient: IRecipient;
+  recipient: ISendMessageRecipient;
   message: any;
-}
-
-export interface IRecipient {
-  id: number;
 }
 
 export interface ISendRequestParams {
   url: string;
-  method: RequestMethod,
-  data: any
+  method: RequestMethod;
+  data: any;
 }
 
 export interface IUserProfile {
-  id: number,
-  name: string,
-  first_name: string,
-  last_name: string,
-  profile_pic: string,
+  id: string;
+  name: string;
+  first_name: string;
+  last_name: string;
+  profile_pic: string;
+}
 
+export interface ISendMessageData {
+  recipient: ISendMessageRecipient;
+  message: ISendMessageMessage;
+}
+
+export interface ISendMessageRecipient {
+  id?: string;
+  user_ref?: string;
+  post_id?: string;
+  comment_id?: string;
+}
+
+export interface ISendMessageMessage {
+  text?: string;
+  attachment?: ISendMessageMessageAttachment;
+}
+
+export interface ISendMessageMessageAttachment {
+  type?: AttachmentType;
+  payload?: any;
+}
+
+export interface IGetWebhook {
+  hub: IGetWebhookHook;
+}
+
+export interface IGetWebhookHook {
+  mode: WebhookHook;
+  verify_token: string;
+  challenge: string;
+}
+
+export interface IWebhookEvent {
+  object: WebhookObject;
+  entry: IWebHookEntry[];
+}
+
+export interface IWebHookEntry {
+  id: string;
+  time: number;
+  messaging: IWebHookMessaging[];
+}
+
+export interface IWebHookMessaging {
+  sender: ISendMessageRecipient;
+  rerecipient: ISendMessageRecipient;
+  postback:IWebHookPostBack
+}
+
+
+export  interface IWebHookPostBack {
+  title: string;
+  payload: PostBackPayload;
+  referral: IWebHookPostBackReferral
+}
+
+export interface IWebHookPostBackReferral {
+  ref: string
+  source: WebhookReferral
+  type: string
+  referer_uri: string
+  is_guest_user: boolean
 }
