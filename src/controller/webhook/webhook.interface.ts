@@ -59,7 +59,9 @@ export interface ISendMessageMessageAttachment {
 }
 
 export interface IGetWebhook {
-  hub: IGetWebhookHook;
+  ["hub.mode"]: WebhookHook;
+  ["hub.verify_token"]: string;
+  ["hub.challenge"]: string;
 }
 
 export interface IGetWebhookHook {
