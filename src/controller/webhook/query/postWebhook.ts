@@ -6,18 +6,17 @@ import { handleMessage, handlePostback } from "../webhook.utils";
 const postWebhook = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { object, entry } = req.body;
-    let result;
 
     // Checks this is an event from a page subscription
     if (object === WebhookObject.PAGE) {
       // Iterates over each entry - there may be multiple if batched
       entry.forEach(async function (entry: any) {
+        let result;
         const webhook_event = entry.messaging[0];
-        console.log(`webhook_event`, webhook_event);
+        console.log(entry);
 
         // Get the sender PSID
         const sender = webhook_event.sender;
-        console.log("Sender: " + sender);
 
         // Check if the event is a message or postback and
         // pass the event to the appropriate handler function
@@ -26,9 +25,9 @@ const postWebhook = async (req: Request, res: Response, next: NextFunction) => {
         } else if (webhook_event.postback) {
           result = await handlePostback(sender, webhook_event.postback);
         }
+        console.log(`result`, result);
       });
 
-      console.log(`result`, result)
       // Returns a '200 OK' response to all requests
       res.status(200).send("EVENT_RECEIVED");
     } else {
@@ -36,7 +35,7 @@ const postWebhook = async (req: Request, res: Response, next: NextFunction) => {
       res.sendStatus(404);
     }
   } catch (error) {
-    console.log(error)
+    console.log(error);
     res.sendStatus(404);
   }
 };
