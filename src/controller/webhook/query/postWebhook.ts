@@ -16,7 +16,7 @@ const postWebhook = (
   
 
   // Checks this is an event from a page subscription
-  if (object === WebhookObject.OBJECT) {
+  if (object === WebhookObject.PAGE) {
     // Iterates over each entry - there may be multiple if batched
     entry.forEach(function (entry:any) {
       const webhook_event = entry.messaging[0];
