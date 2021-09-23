@@ -30,7 +30,7 @@ export enum WebhookHook {
 }
 
 export enum WebhookObject {
-  OBJECT = "object",
+  PAGE = "page",
 }
 
 export enum WebhookReferral {
