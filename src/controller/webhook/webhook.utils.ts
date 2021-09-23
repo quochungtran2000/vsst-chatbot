@@ -106,6 +106,7 @@ export async function handlePostback(
             SendRequestType.USER_INFO,
             { id: sender.id }
           );
+          console.log(user)
           text = `Chào mừng ${user.name} đã đến với Vì Sale Sạch Túi`;
         } catch (error) {
           console.log(error);
