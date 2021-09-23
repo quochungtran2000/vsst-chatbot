@@ -16,7 +16,7 @@ import { mappingRecipientParams, mappingRequestParams } from "./webhook.mapper";
 
 // Handles messages events
 
-export function handleMessage(
+export async function handleMessage(
   sender: ISendMessageRecipient,
   received_message: any
 ) {
@@ -73,7 +73,7 @@ export function handleMessage(
     message: response,
   };
 
-  sendRequest(SendRequestType.MESSAGE, data);
+  return sendRequest(SendRequestType.MESSAGE, data);
 }
 
 // Handles messaging_postbacks events
@@ -129,32 +129,37 @@ export async function handlePostback(
       message: { text: text },
     };
 
-    sendRequest(SendRequestType.MESSAGE, data);
+    return sendRequest(SendRequestType.MESSAGE, data);
   } catch (error) {
     console.log(error);
   }
 }
 
-export const sendRequest = (type: SendRequestType, data: any) => {
+export const sendRequest = (type: SendRequestType, data: any): Promise<any> => {
   const params: ISendRequestParams = mappingRequestParams(type, data);
   return createRequest(params.url, params.method, params.data);
 };
 
-const createRequest = (url: string, method: RequestMethod, data: any) => {
-  console.log(`data payload`, data)
-  return request(
-    {
-      uri: url,
-      qs: { access_token: PAGE_ACCESS_TOKEN },
-      method: method,
-      json: data,
-    },
-    (err, res, body) => {
-      if (!err) {
-        console.log("message sent!");
-      } else {
-        console.error("Unable to send message:" + err);
+const createRequest = (
+  url: string,
+  method: RequestMethod,
+  data: any
+): Promise<any> => {
+  console.log(`data payload`, data);
+  return new Promise((resolve, reject) => {
+    request(
+      {
+        uri: url,
+        qs: { access_token: PAGE_ACCESS_TOKEN },
+        method: method,
+        json: data,
+      },
+      (err, res, body) => {
+        if (err) {
+          reject(err);
+        }
+        resolve(body);
       }
-    }
-  );
+    );
+  });
 };
