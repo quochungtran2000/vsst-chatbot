@@ -8,6 +8,7 @@ import {
 } from "./webhook.enum";
 import {
   IMessage,
+  ISendMessageRecipient,
   ISendRequestParams,
   IUserProfile,
 } from "./webhook.interface";
@@ -15,7 +16,10 @@ import { mappingRequestParams } from "./webhook.mapper";
 
 // Handles messages events
 
-export function handleMessage(sender_psid: number, received_message: any) {
+export function handleMessage(
+  sender: ISendMessageRecipient,
+  received_message: any
+) {
   let response;
 
   // Checks if the message contains text
@@ -63,9 +67,7 @@ export function handleMessage(sender_psid: number, received_message: any) {
   }
 
   const data: IMessage = {
-    recipient: {
-      id: sender_psid,
-    },
+    recipient: sender,
     message: response,
   };
 
@@ -74,11 +76,11 @@ export function handleMessage(sender_psid: number, received_message: any) {
 
 // Handles messaging_postbacks events
 export async function handlePostback(
-  sender_psid: number,
+  sender: ISendMessageRecipient,
   received_postback: any
 ) {
   try {
-    console.log(`sender_psid`, sender_psid);
+    console.log(`handlePostback sender`, sender);
     console.log(`received_postback`, received_postback);
     let text;
     let attachment;
@@ -97,20 +99,16 @@ export async function handlePostback(
       }
       case PostBackPayload.GET_STARTED: {
         text = `Chào mừng bạn đã đến với Vì Sale Sạch Túi`;
-        if (sender_psid) {
-          const user: IUserProfile = await messageApi.getAccountInfo(
-            sender_psid
-          );
+        if (sender.id) {
+          const user: IUserProfile = await messageApi.getAccountInfo(sender.id);
           text = `Chào mừng ${user.name} đã đến với Vì Sale Sạch Túi`;
         }
         break;
       }
       case PostBackPayload.HI: {
         text = `Chào bạn vô danh`;
-        if (sender_psid) {
-          const user: IUserProfile = await messageApi.getAccountInfo(
-            sender_psid
-          );
+        if (sender.id) {
+          const user: IUserProfile = await messageApi.getAccountInfo(sender.id);
           attachment = {
             type: "image",
             payload: {
@@ -123,9 +121,7 @@ export async function handlePostback(
     }
 
     const data: IMessage = {
-      recipient: {
-        id: sender_psid,
-      },
+      recipient: sender,
       message: { text: text },
     };
 

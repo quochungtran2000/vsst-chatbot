@@ -1,26 +1,32 @@
 import { NextFunction, Request, Response } from "express";
+import { WebhookObject } from "../webhook.enum";
+import { IWebhookEvent } from "../webhook.interface";
 import { handleMessage, handlePostback } from "../webhook.utils";
 
-const postWebhook = (req: Request, res: Response, next: NextFunction) => {
-  let body = req.body;
+const postWebhook = (
+  req: Request<any, any, IWebhookEvent, any>,
+  res: Response,
+  next: NextFunction
+) => {
+  const { object, entry } = req.body;
 
   // Checks this is an event from a page subscription
-  if (body.object === "page") {
+  if (object === WebhookObject.OBJECT) {
     // Iterates over each entry - there may be multiple if batched
-    body.entry.forEach(function (entry: any) {
-      let webhook_event = entry.messaging[0];
+    entry.forEach(function (entry) {
+      const webhook_event = entry.messaging[0];
       console.log(`webhook_event`, webhook_event);
 
       // Get the sender PSID
-      let sender_psid = webhook_event.sender.id;
-      console.log("Sender PSID: " + sender_psid);
+      const sender = webhook_event.sender;
+      console.log("Sender: " + sender);
 
       // Check if the event is a message or postback and
       // pass the event to the appropriate handler function
       if (webhook_event.message) {
-        handleMessage(sender_psid, webhook_event.message);
+        handleMessage(sender, webhook_event.message);
       } else if (webhook_event.postback) {
-        handlePostback(sender_psid, webhook_event.postback);
+        handlePostback(sender, webhook_event.postback);
       }
     });
 
