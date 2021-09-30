@@ -9,18 +9,18 @@ export const persistentMenu: IPersistentMenu = {
   call_to_actions: [
     {
       type: CallToActionType.POSTBACK,
-      title: "Title1",
+      title: "Khởi động lại bot",
       payload: PostBackPayload.RESET_CHATBOT,
     },
     {
       type: CallToActionType.WEB_URL,
-      title: "Title1",
+      title: "Blog",
       url: "https://hungblog.vercel.app",
       webview_height_ratio: "full",
     },
     {
       type: CallToActionType.WEB_URL,
-      title: "Title1",
+      title: "Blog1",
       url: "https://hungblog.vercel.app",
     },
   ],
