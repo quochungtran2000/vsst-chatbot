@@ -4,6 +4,7 @@ export enum PostBackPayload {
   GET_STARTED = "GET_STARTED",
   HI = "HI",
   RESET_CHATBOT = "RESET_CHATBOT",
+  WHAT_IS_VSST = "WHAT_IS_VSST",
 }
 
 export enum RequestMethod {
@@ -17,7 +18,7 @@ export enum SendRequestType {
   MESSAGE = "MESSAGE",
   MESSAGE_PROFILE = "MESSAGE_PROFILE",
   USER_INFO = "USER_INFO",
-  PERSISTENT_MENU = "PERSISTENT_MENU"
+  PERSISTENT_MENU = "PERSISTENT_MENU",
 }
 
 export enum AttachmentType {
@@ -45,4 +46,10 @@ export enum WebhookReferral {
 export enum CallToActionType {
   POSTBACK = "postback",
   WEB_URL = "web_url",
+}
+
+export enum Locale {
+  VI = "vi_VN",
+  EN = "en_US",
+  DEFAULT = "default",
 }

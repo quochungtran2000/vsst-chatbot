@@ -10,7 +10,6 @@ export const initialRouter = (app: Application) => {
 
   // webhook router
   router.post("/message-profile", webhookConntroller.messageProfile);
-  router.post("/persistent-menu", webhookConntroller.persistentMenu);
   router.get("/webhook", webhookConntroller.getWebhook);
   router.post("/webhook", webhookConntroller.postWebhook);
 

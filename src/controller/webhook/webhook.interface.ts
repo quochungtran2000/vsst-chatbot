@@ -1,21 +1,13 @@
 import {
   AttachmentType,
   CallToActionType,
+  Locale,
   PostBackPayload,
   RequestMethod,
   WebhookHook,
   WebhookObject,
   WebhookReferral,
 } from "./webhook.enum";
-
-export interface IMessageProfile {
-  get_started: IGetStarted;
-  whitelisted_domains: string[];
-}
-
-export interface IGetStarted {
-  payload: string;
-}
 
 export interface IMessage {
   recipient: ISendMessageRecipient;
@@ -115,4 +107,26 @@ export interface IPersistentMenu {
   locale: string;
   composer_input_disabled: boolean;
   call_to_actions: ICallToAction[];
+}
+
+export interface IMessageProfile {
+  get_started: IGetStarted;
+  whitelisted_domains?: string[];
+  persistent_menu?: IPersistentMenu[];
+  greeting?: IGretting[];
+  ice_breakers?: IIceBreaker[];
+}
+
+export interface IIceBreaker {
+  question: string;
+  payload: PostBackPayload;
+}
+
+export interface IGretting {
+  locale: Locale;
+  text: string;
+}
+
+export interface IGetStarted {
+  payload: string;
 }
