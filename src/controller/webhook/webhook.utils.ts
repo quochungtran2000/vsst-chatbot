@@ -2,12 +2,15 @@ import request from "request";
 import messageApi from "../../axios/messageApi";
 import { PAGE_ACCESS_TOKEN } from "../../utils/constant";
 import {
+  CallToActionType,
   PostBackPayload,
   RequestMethod,
   SendRequestType,
 } from "./webhook.enum";
 import {
+  ICallToAction,
   IMessage,
+  IPersistentMenu,
   ISendMessageRecipient,
   ISendRequestParams,
   IUserProfile,
@@ -98,6 +101,7 @@ export async function handlePostback(
       text = "Noooooooo.";
       break;
     }
+    case PostBackPayload.RESET_CHATBOT:
     case PostBackPayload.GET_STARTED: {
       text = `Chào mừng bạn đã đến với Vì Sale Sạch Túi`;
       if (sender.id) {
@@ -106,8 +110,40 @@ export async function handlePostback(
             SendRequestType.USER_INFO,
             { id: sender.id }
           );
-          console.log(user)
+          console.log(user);
           text = `Chào mừng ${user.name} đã đến với Vì Sale Sạch Túi`;
+
+          const callToAction1: ICallToAction = {
+            type: CallToActionType.POSTBACK,
+            title: "Title1",
+            payload: PostBackPayload.RESET_CHATBOT,
+          };
+      
+          const callToAction2: ICallToAction = {
+            type: CallToActionType.POSTBACK,
+            title: "Title1",
+            url: "https://hungblog.vercel.app",
+            webview_height_ratio: "full",
+          };
+          const callToAction3: ICallToAction = {
+            type: CallToActionType.POSTBACK,
+            title: "Title2",
+            url: "https://hungblog.vercel.app",
+          };
+      
+          const data: IPersistentMenu = {
+            locale: "default",
+            composer_input_disabled: false,
+            call_to_actions: [callToAction1, callToAction2, callToAction3],
+          };
+
+          const persistentMenuData = {
+            psid: sender.id,
+            persistent_menu: data
+          }
+      
+          const result = await sendRequest(SendRequestType.PERSISTENT_MENU, persistentMenuData);
+          console.log(`asdasd`, result)
         } catch (error) {
           console.log(error);
         }

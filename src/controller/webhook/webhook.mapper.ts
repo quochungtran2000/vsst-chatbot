@@ -26,7 +26,11 @@ export const mappingRequestParams = (
       break;
     }
     case SendRequestType.USER_INFO:{
-      result.url = `${FB_API}/${data.id}?fields=first_name,last_name,name,profile_pic&access_token=${PAGE_ACCESS_TOKEN} `
+      result.url = `${FB_API}/${data.id}?fields=first_name,last_name,name,profile_pic&access_token=${PAGE_ACCESS_TOKEN}`
+      break;
+    }
+    case SendRequestType.PERSISTENT_MENU: {
+      result.url = `${FB_API}/v12.0/me/custom_user_settings?access_token=${PAGE_ACCESS_TOKEN}`
       break;
     }
   }
@@ -44,3 +48,6 @@ export const mappingRecipientParams = (data: ISendMessageRecipient) => {
 
   return result
 }
+
+
+// export const mappingMessagePayload = (payload)

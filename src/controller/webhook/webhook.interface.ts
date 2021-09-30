@@ -1,5 +1,6 @@
 import {
   AttachmentType,
+  CallToActionType,
   PostBackPayload,
   RequestMethod,
   WebhookHook,
@@ -100,4 +101,18 @@ export interface IWebHookPostBackReferral {
   type: string;
   referer_uri: string;
   is_guest_user: boolean;
+}
+
+export interface ICallToAction {
+  type: CallToActionType;
+  title: string;
+  payload?: string;
+  url?: string;
+  webview_height_ratio?: string;
+}
+
+export interface IPersistentMenu {
+  locale: string;
+  composer_input_disabled: boolean;
+  call_to_actions: ICallToAction[];
 }
